@@ -1,6 +1,13 @@
 <template>
-  <div class="sidebar" @drop="handleDrop" @dragover.prevent>
-    <v-treeview dense :items="fileList"></v-treeview>
+  <div
+    class="sidebar"
+    @drop="handleDrop"
+    @dragover.prevent
+  >
+    <v-treeview
+      dense
+      :items="fileList"
+    />
   </div>
 </template>
 
@@ -11,13 +18,13 @@ module.exports = {
   },
 
   methods: {
-    handleDrop(ev) {
+    handleDrop (ev) {
       if (ev.dataTransfer.files.length) {
-        this.$emit("upload", ev.dataTransfer.files);
+        this.$emit('upload', ev.dataTransfer.files)
       }
     }
   }
-};
+}
 </script>
 
 <style>

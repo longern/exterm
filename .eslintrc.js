@@ -4,7 +4,8 @@ module.exports = {
     es6: true
   },
   extends: [
-    'standard'
+    'standard',
+    "plugin:vue/recommended"
   ],
   globals: {
     Atomics: 'readonly',
@@ -13,6 +14,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018
   },
+  plugins: [
+    'vue'
+  ],
   rules: {
   }
 }

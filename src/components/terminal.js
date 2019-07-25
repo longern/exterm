@@ -12,7 +12,7 @@ const converter = new ansiHtml({
 
 const escapeCodeHandlers = []
 
-function addEscapeCodeHandler(re, handler) {
+function addEscapeCodeHandler (re, handler) {
   escapeCodeHandlers.push({
     re: new RegExp('^\\x1B' + re.source),
     handler
@@ -25,7 +25,7 @@ addEscapeCodeHandler(/\=/, () => {
 
 addEscapeCodeHandler(/\](\d+);([^\x07]*)\x07/, (match) => {
   switch (Number(match[1])) {
-    case 0:  // Set document title
+    case 0: // Set document title
       document.title = match[2]
       break
 
@@ -109,8 +109,8 @@ addEscapeCodeHandler(/\[6n/, function () {
 })
 
 let applicationCursorKeys = false
-let windowWidth = 80
-let windowHeight = 24
+const windowWidth = 80
+const windowHeight = 24
 let workingBuffer = ''
 let workingCursorRow = 1
 let workingCursorColumn = 1
@@ -163,7 +163,7 @@ addEscapeCodeHandler(/(?:)/, () => {
   console.log('Not handled')
 })
 
-function handleEscapeCode(data) {
+function handleEscapeCode (data) {
   console.log('ec: ', data.slice(0, 30))
 
   for (let i = 0; i < escapeCodeHandlers.length; i += 1) {
@@ -175,13 +175,13 @@ function handleEscapeCode(data) {
   }
 }
 
-function escape(text) {
+function escape (text) {
   const escapeContainer = document.createElement('span')
   escapeContainer.innerText = text
   return escapeContainer.innerHTML
 }
 
-function getContainerOffset(row, column) {
+function getContainerOffset (row, column) {
   while (row > this.$refs.buffer.childNodes.length) {
     this.$refs.buffer.appendChild(document.createElement('div'))
   }
@@ -219,9 +219,9 @@ function getContainerOffset(row, column) {
   }
 }
 
-function handleAnsi(data) {
+function handleAnsi (data) {
   let remainedData = data
-  let selection = window.getSelection()
+  const selection = window.getSelection()
 
   while (remainedData) {
     if (remainedData[0].charCodeAt() >= 32) {
@@ -264,22 +264,22 @@ function handleAnsi(data) {
     }
 
     switch (remainedData[0]) {
-      case '\x07':  // Beep
+      case '\x07': // Beep
         const { shell } = window.require('electron')
         shell.beep()
         break
 
-      case '\x08':  // Backspace
+      case '\x08': // Backspace
         selection.modify('move', 'backward', 'character')
         this.cursorColumn -= 1
         break
 
-      case '\x0A':  // Line feed
+      case '\x0A': // Line feed
         this.cursorRow += 1
         resetCursor.call(this)
         break
 
-      case '\x0D':  // Carriage return
+      case '\x0D': // Carriage return
         selection.modify('move', 'backward', 'lineboundary')
         this.cursorColumn = 1
         break
@@ -292,7 +292,7 @@ function handleAnsi(data) {
   }
 }
 
-function resetCursor() {
+function resetCursor () {
   while (this.cursorRow > this.$refs.buffer.childNodes.length) {
     this.$refs.buffer.appendChild(document.createElement('div'))
   }
@@ -309,7 +309,7 @@ function resetCursor() {
 }
 
 module.exports = {
-  data() {
+  data () {
     return {
       cursorRow: 1,
       cursorColumn: 1
@@ -321,7 +321,7 @@ module.exports = {
   },
 
   methods: {
-    handleCompositionEnd(ev) {
+    handleCompositionEnd (ev) {
       if (!this.stream) {
         return
       }
@@ -334,7 +334,7 @@ module.exports = {
       selection.deleteFromDocument()
     },
 
-    handleFocus(ev) {
+    handleFocus (ev) {
       setTimeout(() => {
         resetCursor.call(this)
 
@@ -343,29 +343,29 @@ module.exports = {
       }, 0)
     },
 
-    handleKeyDown(ev) {
+    handleKeyDown (ev) {
       let eventHandled = false
-      if ([8, 9, 27].includes(ev.which)) {  // Backspace & Tab & Escape
+      if ([8, 9, 27].includes(ev.which)) { // Backspace & Tab & Escape
         this.stream.write(String.fromCharCode(ev.which))
-      } else if (ev.ctrlKey && ev.which >= 65 && ev.which <= 90) {  // Ctrl-A to Ctrl-Z
+      } else if (ev.ctrlKey && ev.which >= 65 && ev.which <= 90) { // Ctrl-A to Ctrl-Z
         this.stream.write(String.fromCharCode(ev.which - 64))
-      } else if (ev.which === 33) {  // Page Up
+      } else if (ev.which === 33) { // Page Up
         this.stream.write('\x1B[5~')
-      } else if (ev.which === 34) {  // Page Down
+      } else if (ev.which === 34) { // Page Down
         this.stream.write('\x1B[6~')
-      } else if (ev.which === 35) {  // End
+      } else if (ev.which === 35) { // End
         this.stream.write('\x1B[4~')
-      } else if (ev.which === 36) {  // Home
+      } else if (ev.which === 36) { // Home
         this.stream.write('\x1B[1~')
-      } else if (ev.which === 37) {  // Arrow Left
+      } else if (ev.which === 37) { // Arrow Left
         this.stream.write(applicationCursorKeys ? '\x1bOD' : '\x1B[D')
-      } else if (ev.which === 38) {  // Arrow Up
+      } else if (ev.which === 38) { // Arrow Up
         this.stream.write(applicationCursorKeys ? '\x1bOA' : '\x1B[A')
-      } else if (ev.which === 39) {  // Arrow Right
+      } else if (ev.which === 39) { // Arrow Right
         this.stream.write(applicationCursorKeys ? '\x1bOC' : '\x1B[C')
-      } else if (ev.which === 40) {  // Arrow Down
+      } else if (ev.which === 40) { // Arrow Down
         this.stream.write(applicationCursorKeys ? '\x1bOB' : '\x1B[B')
-      } else if (ev.which === 46) {  // Delete
+      } else if (ev.which === 46) { // Delete
         this.stream.write('\x1B[3~')
       } else {
         eventHandled = true
@@ -376,7 +376,7 @@ module.exports = {
       }
     },
 
-    handleKeyPress(ev) {
+    handleKeyPress (ev) {
       if (!this.stream) {
         return
       }
@@ -384,11 +384,11 @@ module.exports = {
       this.stream.write(String.fromCharCode(ev.which))
     },
 
-    handleMouseDown(ev) {
+    handleMouseDown (ev) {
       this.$refs.buffer.focus()
     },
 
-    handlePaste(ev) {
+    handlePaste (ev) {
       if (!this.stream) {
         return
       }
@@ -397,7 +397,7 @@ module.exports = {
       this.stream.write(clipboard.readText())
     },
 
-    write(data) {
+    write (data) {
       // Insert data at caret
       resetCursor.call(this)
       handleAnsi.call(this, data, this.stream)
@@ -407,7 +407,7 @@ module.exports = {
     }
   },
 
-  async mounted() {
+  async mounted () {
     resetCursor.call(this)
   }
 }

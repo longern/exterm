@@ -5,17 +5,29 @@
       app
       permanent
     >
-      <sidebar :file-list="fileList"></sidebar>
+      <sidebar :file-list="fileList" />
     </v-navigation-drawer>
     <v-content>
-      <v-container fluid fill-height pa-0>
-        <terminal ref="tty" v-show="sshConnection" :stream="stream"></terminal>
-        <v-layout v-if="!sshConnection" align-center justify-center>
+      <v-container
+        fluid
+        fill-height
+        pa-0
+      >
+        <terminal
+          v-show="sshConnection"
+          ref="tty"
+          :stream="stream"
+        />
+        <v-layout
+          v-if="!sshConnection"
+          align-center
+          justify-center
+        >
           <login-card
             :config="settings.config"
-            :autoLogin="settings.autoLogin"
+            :auto-login="settings.autoLogin"
             @input="handleLogin"
-          ></login-card>
+          />
         </v-layout>
       </v-container>
     </v-content>
@@ -31,7 +43,7 @@ const util = window.require('util')
 const ssh2 = window.require('ssh2')
 const { remote } = window.require('electron')
 
-function appMenuGenerator() {
+function appMenuGenerator () {
   const component = this
   return remote.Menu.buildFromTemplate([
     {
@@ -41,20 +53,20 @@ function appMenuGenerator() {
           type: 'checkbox',
           label: 'Auto Login',
           checked: component.settings.autoLogin,
-          click() {
+          click () {
             component.settings.autoLogin = !component.settings.autoLogin
           }
         },
         {
           label: '&Exit',
-          click() { remote.getCurrentWindow().close() }
+          click () { remote.getCurrentWindow().close() }
         }
       ]
     }
   ])
 }
 
-function loadStoredSettings(settings) {
+function loadStoredSettings (settings) {
   const storageString = localStorage.getItem('WebSSHStorage')
   if (!storageString) {
     return
@@ -69,7 +81,7 @@ function loadStoredSettings(settings) {
 }
 
 module.exports = {
-  data() {
+  data () {
     return {
       fileList: [],
       settings: {
@@ -83,7 +95,7 @@ module.exports = {
   },
 
   methods: {
-    handleLogin(config) {
+    handleLogin (config) {
       this.settings.config = config
       const conn = new ssh2.Client()
       this.sshConnection = conn
@@ -106,7 +118,7 @@ module.exports = {
     }
   },
 
-  mounted() {
+  mounted () {
     loadStoredSettings(this.settings)
 
     const customTitlebar = window.require('custom-electron-titlebar')
@@ -115,12 +127,12 @@ module.exports = {
       menu: appMenuGenerator.call(this)
     })
 
-    new MutationObserver(function(mutations) {
-      titlebar.updateTitle(mutations[0].target.nodeValue);
+    new MutationObserver(function (mutations) {
+      titlebar.updateTitle(mutations[0].target.nodeValue)
     }).observe(
-        document.querySelector('title'),
-        { childList: true }
-    );
+      document.querySelector('title'),
+      { childList: true }
+    )
 
     if (this.settings.autoLogin) {
       this.handleLogin(this.settings.config)
@@ -129,7 +141,7 @@ module.exports = {
 
   watch: {
     settings: {
-      handler() {
+      handler () {
         localStorage.setItem('WebSSHStorage', JSON.stringify(this.settings))
       },
       deep: true

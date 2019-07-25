@@ -10,7 +10,7 @@
     @compositionend.prevent="handleCompositionEnd"
     @contextmenu="handlePaste"
   >
-    <div></div>
+    <div />
   </div>
 </template>
 
