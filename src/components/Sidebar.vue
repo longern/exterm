@@ -6,6 +6,7 @@
   >
     <v-treeview
       dense
+      item-text="filename"
       :items="fileList"
     />
   </div>
