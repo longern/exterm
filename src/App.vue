@@ -157,7 +157,8 @@ module.exports = {
 </script>
 
 <style>
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -169,7 +170,9 @@ html {
   font-family: sans-serif;
 }
 
-.v-application--wrap, .v-navigation-drawer, .v-content {
+.v-application--wrap,
+.v-navigation-drawer,
+.v-content {
   max-height: calc(100vh - 30px);
   min-height: calc(100vh - 30px);
 }
@@ -178,7 +181,7 @@ html {
   padding-top: 30px !important;
 }
 
-.v-content[data-booted=true] {
+.v-content[data-booted="true"] {
   transition: none;
 }
 </style>

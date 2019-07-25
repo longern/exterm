@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: [
     'standard',
-    "plugin:vue/recommended"
+    'plugin:vue/essential'
   ],
   globals: {
     Atomics: 'readonly',
@@ -21,5 +21,6 @@ module.exports = {
     'vue'
   ],
   rules: {
+    'vue/html-self-closing': 'off'
   }
 }
