@@ -1,5 +1,6 @@
-const ansiHtml = window.require('ansi-to-html')
-const converter = new ansiHtml({
+/* eslint-disable no-control-regex */
+const AnsiHtml = window.require('ansi-to-html')
+const converter = new AnsiHtml({
   bg: '#222',
   stream: true,
   colors: {
@@ -19,7 +20,7 @@ function addEscapeCodeHandler (re, handler) {
   })
 }
 
-addEscapeCodeHandler(/\=/, () => {
+addEscapeCodeHandler(/=/, () => {
   // Alternate keypad mode
 })
 

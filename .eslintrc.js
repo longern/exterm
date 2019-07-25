@@ -9,7 +9,10 @@ module.exports = {
   ],
   globals: {
     Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    SharedArrayBuffer: 'readonly',
+    Vue: 'readonly',
+    Vuetify: 'readonly',
+    httpVueLoader: 'readonly'
   },
   parserOptions: {
     ecmaVersion: 2018
