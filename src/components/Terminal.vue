@@ -10,7 +10,7 @@
     @compositionend.prevent="handleCompositionEnd"
     @contextmenu="handlePaste"
   >
-    <div />
+    <div></div>
   </div>
 </template>
 
@@ -38,6 +38,6 @@
 }
 
 .terminal div::after {
-  content: '\200B';
+  content: "\200B";
 }
 </style>

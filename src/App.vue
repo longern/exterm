@@ -17,7 +17,7 @@
           v-show="sshConnection"
           ref="tty"
           :stream="stream"
-        />
+        ></terminal>
         <v-layout
           v-if="!sshConnection"
           align-center

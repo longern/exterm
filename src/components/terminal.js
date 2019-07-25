@@ -1,15 +1,19 @@
 /* eslint-disable no-control-regex */
-const AnsiHtml = window.require('ansi-to-html')
-const converter = new AnsiHtml({
-  bg: '#222',
-  stream: true,
-  colors: {
-    1: '#F22',
-    2: '#2D2',
-    3: '#E81',
-    4: '#07F'
-  }
-})
+const converter = (function () {
+  if (!window.require) return { toHtml: (x) => x }
+  const AnsiHtml = window.require('ansi-to-html')
+  const ansiConverter = new AnsiHtml({
+    bg: '#222',
+    stream: true,
+    colors: {
+      1: '#F22',
+      2: '#2D2',
+      3: '#E81',
+      4: '#07F'
+    }
+  })
+  return ansiConverter
+})()
 
 const escapeCodeHandlers = []
 

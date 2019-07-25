@@ -12,14 +12,14 @@
           v-model="url"
           label="URL"
           type="text"
-        />
+        ></v-text-field>
         <v-textarea
           v-model="privateKey"
           label="Private Key"
           type="text"
           append-outer-icon="folder_open"
           @click:append-outer="$refs.keyFile.click()"
-        />
+        ></v-textarea>
         <input
           ref="keyFile"
           type="file"
@@ -29,7 +29,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer />
+      <v-spacer></v-spacer>
       <v-btn
         color="primary"
         @click="handleLogin"
@@ -41,11 +41,6 @@
 </template>
 
 <script>
-const fs = window.require('fs')
-const os = window.require('os')
-const path = window.require('path')
-const url = window.require('url')
-
 function parseConfig (config) {
   return [
     'ssh://',
@@ -69,6 +64,7 @@ module.exports = {
 
   methods: {
     handleLogin () {
+      const url = window.require('url')
       const sshUrl = url.parse(this.url)
       this.$emit('input', {
         host: sshUrl.hostname,
@@ -80,6 +76,7 @@ module.exports = {
     },
 
     setPrivateKey () {
+      const fs = window.require('fs')
       if (this.$refs.keyFile.files.length) {
         this.privateKey = fs.readFileSync(this.$refs.keyFile.files[0].path, {
           encoding: 'utf-8'
@@ -89,6 +86,11 @@ module.exports = {
   },
 
   async mounted () {
+    if (!window.require) return
+
+    const fs = window.require('fs')
+    const os = window.require('os')
+    const path = window.require('path')
     const h5native = window.require('h5native')
     const sshConfig = await h5native.requireAsync('ssh-config')
 
