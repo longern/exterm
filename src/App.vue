@@ -39,11 +39,8 @@ const LoginCard = httpVueLoader('src/components/LoginCard.vue')
 const Sidebar = httpVueLoader('src/components/Sidebar.vue')
 const Terminal = httpVueLoader('src/components/Terminal.vue')
 
-const util = window.require('util')
-const ssh2 = window.require('ssh2')
-const { remote } = window.require('electron')
-
 function appMenuGenerator () {
+  const { remote } = window.require('electron')
   const component = this
   return remote.Menu.buildFromTemplate([
     {
@@ -96,10 +93,12 @@ module.exports = {
 
   methods: {
     handleLogin (config) {
+      const ssh2 = window.require('ssh2')
       this.settings.config = config
       const conn = new ssh2.Client()
       this.sshConnection = conn
       conn.on('ready', async () => {
+        const util = window.require('util')
         this.$refs.tty.$el.focus()
         const sftp = await util.promisify(conn.sftp.bind(conn))()
         this.fileList = await util.promisify(sftp.readdir.bind(sftp))('.')
@@ -120,6 +119,8 @@ module.exports = {
 
   mounted () {
     loadStoredSettings(this.settings)
+
+    if (!window.require) return
 
     const customTitlebar = window.require('custom-electron-titlebar')
     const titlebar = new customTitlebar.Titlebar({
