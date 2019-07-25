@@ -1,0 +1,20 @@
+{
+  "name": "longern.github.io",
+  "version": "1.0.0",
+  "description": "Just another blog",
+  "dependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longern/longern.github.io.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/longern/longern.github.io/issues"
+  },
+  "homepage": "https://longern.com"
+}
