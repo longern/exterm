@@ -39,6 +39,11 @@ addEscapeCodeHandler(/\](\d+);([^\x07]*)\x07/, (match) => {
   }
 })
 
+addEscapeCodeHandler(/\[(\d*)@/, function (match) {
+  const amount = Number(match[1]) || 1
+  handleAnsi.call(this, ' '.repeat(amount))
+})
+
 addEscapeCodeHandler(/\[(\d*)A/, function (match) {
   this.cursorRow -= Number(match[1]) || 1
   resetCursor.call(this)
